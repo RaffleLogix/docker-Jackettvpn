@@ -1,7 +1,6 @@
 # Jackett and OpenVPN, JackettVPN
 
-FROM ubuntu:18.04
-MAINTAINER DyonR
+FROM debian:stable-slim
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV XDG_DATA_HOME="/config" \
@@ -32,10 +31,8 @@ RUN apt update \
     iptables \
     ipcalc\
     grep \
-    libicu60 \
     libcurl4 \
     liblttng-ust0 \
-    libssl1.0.0 \
     libkrb5-3 \
     zlib1g \
     tzdata \
