@@ -39,6 +39,7 @@ RUN apt update \
     iputils-ping \
     jq \
     grepcidr \
+    procps \
     && apt-get clean \
     && rm -rf \
     /var/lib/apt/lists/* \
