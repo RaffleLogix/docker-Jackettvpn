@@ -74,6 +74,7 @@ RUN apt -y purge \
     cmake \
     git \
     && apt-get clean \
+    && apt -y autoremove
     && rm -rf \
     /var/lib/apt/lists/* \
     /tmp/* \
