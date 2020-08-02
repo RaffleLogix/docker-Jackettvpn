@@ -3,6 +3,7 @@
 if [[ ! -e /config/Jackett ]]; then
 	mkdir -p /config/Jackett
 fi
+
 # Set the correct rights accordingly to the PUID and PGID on /config/Jackett
 chown -R ${PUID}:${PGID} /config/Jackett
 
