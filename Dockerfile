@@ -13,13 +13,11 @@ RUN usermod -u 99 nobody
 # Make directories
 RUN mkdir -p /blackhole /config/Jackett /etc/jackett
 
-# Remove procps
-RUN apt -y purge procps
-
-# Update, upgrade and install required packages
-RUN apt update \
+# Remove procps, update, upgrade and install required packages
+RUN apt -y purge procps \
+    && apt update \
     && apt -y upgrade \
-    && apt -y install \
+    && apt -y install --no-install-recommends \
     apt-transport-https \
     wget \
     curl \
@@ -49,9 +47,14 @@ RUN apt update \
     libsystemd-dev \
     pkg-config \
     cmake \
-    git
+    git \
+    && apt-get clean \
+    && apt -y autoremove \
+    && rm -rf \
+    /var/lib/apt/lists/* \
+    /tmp/* \
+    /var/tmp/*
 
-# Compile procps
 RUN git clone "https://gitlab.com/procps-ng/procps.git" \
     && cd /opt/procps \
     && ./autogen.sh \
@@ -59,7 +62,6 @@ RUN git clone "https://gitlab.com/procps-ng/procps.git" \
     && make \
     && make install
 
-# Clean procps dependencies
 RUN apt -y purge \
     autopoint \
     autoconf \
@@ -80,7 +82,6 @@ RUN apt -y purge \
     /tmp/* \
     /var/tmp/*
 
-# Install Jackett
 RUN jackett_latest=$(curl --silent "https://api.github.com/repos/Jackett/Jackett/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') \
     && curl -o /opt/Jackett.Binaries.LinuxAMDx64.tar.gz -L https://github.com/Jackett/Jackett/releases/download/$jackett_latest/Jackett.Binaries.LinuxAMDx64.tar.gz \
     && tar -xzf /opt/Jackett.Binaries.LinuxAMDx64.tar.gz \
