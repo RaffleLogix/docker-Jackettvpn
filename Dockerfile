@@ -13,12 +13,13 @@ RUN usermod -u 99 nobody
 # Make directories
 RUN mkdir -p /blackhole /config/Jackett /etc/jackett
 
-# Remove procps, update, upgrade and install required packages
 RUN apt -y purge procps \
     && apt update \
     && apt -y upgrade \
-    && apt -y install --no-install-recommends \
+    && apt -y install \
     apt-transport-https \
+    git \
+    && apt -y install --no-install-recommends \
     wget \
     curl \
     gnupg \
@@ -35,6 +36,7 @@ RUN apt -y purge procps \
     zlib1g \
     iputils-ping \
     jq \
+    libicu66 \
     grepcidr \
     autopoint \
     autoconf \
@@ -47,27 +49,14 @@ RUN apt -y purge procps \
     libsystemd-dev \
     pkg-config \
     cmake \
-    git \
-    && apt-get clean \
-    && apt -y autoremove \
-    && rm -rf \
-    /var/lib/apt/lists/* \
-    /tmp/* \
-    /var/tmp/*
-
-RUN git clone "https://gitlab.com/procps-ng/procps.git" \
-    && cd /opt/procps \
-    && ./autogen.sh \
-    && ./configure \
-    && make \
-    && make install
-
-RUN apt -y purge \
+    build-essential \
+    && git clone "https://gitlab.com/procps-ng/procps.git" \
+    && cd /opt/procps && ./autogen.sh && ./configure --disable-dependency-tracking && /usr/bin/make && /usr/bin/make install \
+    && apt -y purge \
     autopoint \
     autoconf \
     automake \
     libtool-bin \
-    gettext \
     libncursesw5-dev \
     dejagnu \
     libnuma-dev \
@@ -75,6 +64,7 @@ RUN apt -y purge \
     pkg-config \
     cmake \
     git \
+    build-essential \
     && apt-get clean \
     && apt -y autoremove \
     && rm -rf \
