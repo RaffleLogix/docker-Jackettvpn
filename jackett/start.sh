@@ -102,7 +102,7 @@ chmod -R 755 /config/Jackett
 
 # Wait a second for it to start up and get the process id
 sleep 1
-jackettpid=$(pgrep -o -x jackett) 
+jackettpid=$(/usr/local/bin/pgrep -o -x jackett) 
 echo "[INFO] Jackett PID: $jackettpid" | ts '%Y-%m-%d %H:%M:%.S'
 
 # If the process exists, make sure that the log file has the proper rights and start the health check

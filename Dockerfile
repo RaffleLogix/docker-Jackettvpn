@@ -13,6 +13,9 @@ RUN usermod -u 99 nobody
 # Make directories
 RUN mkdir -p /blackhole /config/Jackett /etc/jackett
 
+# Remove procps
+RUN apt -y purge procps
+
 # Update, upgrade and install required packages
 RUN apt update \
     && apt -y upgrade \
@@ -35,12 +38,46 @@ RUN apt update \
     iputils-ping \
     jq \
     grepcidr \
+    autopoint \
+    autoconf \
+    automake \
+    libtool-bin \
+    gettext \
+    libncursesw5-dev \
+    dejagnu \
+    libnuma-dev \
+    libsystemd-dev \
+    pkg-config \
+    cmake \
+    git
+
+# Compile procps
+RUN git clone --single-branch --branch "v3.3.16" "https://gitlab.com/procps-ng/procps.git" \
+    && cd /opt/procps \
+    && ./autogen.sh \
+    && ./configure \
+    && make \
+    && make install
+
+# Clean procps dependencies
+RUN apt -y purge \
+    autopoint \
+    autoconf \
+    automake \
+    libtool-bin \
+    gettext \
+    libncursesw5-dev \
+    dejagnu \
+    libnuma-dev \
+    libsystemd-dev \
+    pkg-config \
+    cmake \
+    git \
     && apt-get clean \
     && rm -rf \
     /var/lib/apt/lists/* \
     /tmp/* \
     /var/tmp/*
-
 
 # Install Jackett
 RUN jackett_latest=$(curl --silent "https://api.github.com/repos/Jackett/Jackett/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') \
