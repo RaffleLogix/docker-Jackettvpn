@@ -52,7 +52,7 @@ RUN apt update \
     git
 
 # Compile procps
-RUN git clone --single-branch --branch "v3.3.16" "https://gitlab.com/procps-ng/procps.git" \
+RUN git clone "https://gitlab.com/procps-ng/procps.git" \
     && cd /opt/procps \
     && ./autogen.sh \
     && ./configure \
