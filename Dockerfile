@@ -78,6 +78,7 @@ RUN apt -y purge \
     && apt-get clean \
     && apt -y autoremove \
     && rm -rf \
+    /opt/procps/ \
     /var/lib/apt/lists/* \
     /tmp/* \
     /var/tmp/*
