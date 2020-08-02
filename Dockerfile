@@ -1,6 +1,6 @@
 # Jackett and OpenVPN, JackettVPN
 
-FROM debian:stable-slim
+FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV XDG_DATA_HOME="/config" \
@@ -21,25 +21,20 @@ RUN apt update \
     wget \
     curl \
     gnupg \
-    sed \
     openvpn \
-    curl \
     moreutils \
     net-tools \
     dos2unix \
     kmod \
     iptables \
     ipcalc\
-    grep \
     libcurl4 \
     liblttng-ust0 \
     libkrb5-3 \
     zlib1g \
-    tzdata \
     iputils-ping \
     jq \
     grepcidr \
-    procps \
     && apt-get clean \
     && rm -rf \
     /var/lib/apt/lists/* \
@@ -50,7 +45,7 @@ RUN apt update \
 # Install Jackett
 RUN jackett_latest=$(curl --silent "https://api.github.com/repos/Jackett/Jackett/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') \
     && curl -o /opt/Jackett.Binaries.LinuxAMDx64.tar.gz -L https://github.com/Jackett/Jackett/releases/download/$jackett_latest/Jackett.Binaries.LinuxAMDx64.tar.gz \
-    && tar -xvzf /opt/Jackett.Binaries.LinuxAMDx64.tar.gz \
+    && tar -xzf /opt/Jackett.Binaries.LinuxAMDx64.tar.gz \
     && rm /opt/Jackett.Binaries.LinuxAMDx64.tar.gz
 
 VOLUME /blackhole /config
