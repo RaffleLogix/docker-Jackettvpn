@@ -19,7 +19,7 @@ RUN apt -y purge procps \
     && apt update \
     && apt -y upgrade \
     && apt -y install \
-    apt-transport-https
+    apt-transport-https \
     && apt-get clean \
     && apt -y autoremove \
     && rm -rf \
