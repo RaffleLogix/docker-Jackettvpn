@@ -13,12 +13,21 @@ RUN usermod -u 99 nobody
 # Make directories
 RUN mkdir -p /blackhole /config/Jackett /etc/jackett
 
+RUN 
+
 RUN apt -y purge procps \
     && apt update \
     && apt -y upgrade \
     && apt -y install \
-    apt-transport-https \
-    && apt -y install --no-install-recommends \
+    apt-transport-https
+    && apt-get clean \
+    && apt -y autoremove \
+    && rm -rf \
+    /var/lib/apt/lists/* \
+    /tmp/* \
+    /var/tmp/*
+
+RUN apt -y install --no-install-recommends
     wget \
     curl \
     gnupg \
