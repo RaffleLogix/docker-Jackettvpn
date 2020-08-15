@@ -25,7 +25,9 @@ RUN apt -y purge procps \
     /tmp/* \
     /var/tmp/*
 
-RUN apt -y install --no-install-recommends \
+RUN apt update \
+    apt -y upgrade \
+    apt -y install --no-install-recommends \
     wget \
     curl \
     gnupg \
