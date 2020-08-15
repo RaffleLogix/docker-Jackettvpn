@@ -13,8 +13,6 @@ RUN usermod -u 99 nobody
 # Make directories
 RUN mkdir -p /blackhole /config/Jackett /etc/jackett
 
-RUN 
-
 RUN apt -y purge procps \
     && apt update \
     && apt -y upgrade \
