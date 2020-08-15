@@ -13,9 +13,8 @@ RUN usermod -u 99 nobody
 # Make directories
 RUN mkdir -p /blackhole /config/Jackett /etc/jackett
 
-RUN apt -y purge procps
-
-RUN apt update \
+RUN apt -y purge procps \
+    && apt update \
     && apt -y upgrade \
     && apt -y install \
     apt-transport-https \
@@ -37,11 +36,8 @@ RUN apt update \
     iputils-ping \
     jq \
     libicu66 \
-    grepcidr
-
-RUN apt -y install \
+    grepcidr \
     git \
-    && apt -y install --no-install-recommends \
     autopoint \
     autoconf \
     automake \
